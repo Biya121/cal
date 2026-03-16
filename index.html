@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* ===== CSS Custom Properties ===== */
+    /* ===== CSS Custom Properties — Dark (default) ===== */
     :root {
       --color-bg-page:        #1a1209;
       --color-bg-calc:        #2b1f0e;
@@ -17,9 +17,7 @@
       --color-display-bg:     #0d0a05;
       --color-display-text:   #e8d49a;
       --color-display-sub:    #8a7050;
-      --color-parchment:      #f4ecd8;
 
-      /* Number button */
       --color-num-bg:         #3d2e14;
       --color-num-bg-hover:   #4e3a1a;
       --color-num-text:       #d4b87a;
@@ -27,31 +25,79 @@
       --color-num-shadow-hi:  #5a4020;
       --color-num-shadow-lo:  #1a0e04;
 
-      /* Operator button */
       --color-op-bg:          #5c1a1a;
       --color-op-bg-hover:    #6e2020;
       --color-op-text:        #e8c070;
       --color-op-border:      #8b2c2c;
       --color-op-glow:        rgba(180, 60, 60, 0.6);
 
-      /* Equals button */
       --color-eq-bg:          #7a5a00;
       --color-eq-bg-hover:    #9a7000;
       --color-eq-text:        #fff8e0;
       --color-eq-border:      #c8a030;
       --color-eq-glow:        rgba(200, 160, 48, 0.7);
 
-      /* Clear button */
       --color-clr-bg:         #1a3a1a;
       --color-clr-bg-hover:   #22502a;
       --color-clr-text:       #80d490;
       --color-clr-border:     #2e6e3a;
+
+      --color-title:          #c8a050;
+      --color-footer:         #5a4020;
+      --color-ornament:       #c8a05a;
+
+      --color-toggle-bg:      #2b1f0e;
+      --color-toggle-border:  #c8a05a;
+      --color-toggle-text:    #e8c070;
 
       --font-main:            'Cinzel', serif;
       --font-deco:            'Cinzel Decorative', cursive;
       --radius-btn:           6px;
       --radius-calc:          12px;
       --transition-btn:       all 0.15s ease;
+    }
+
+    /* ===== CSS Custom Properties — Light (parchment) ===== */
+    :root[data-theme="light"] {
+      --color-bg-page:        #c8a86a;
+      --color-bg-calc:        #e8d4a8;
+      --color-border-outer:   #8b6030;
+      --color-border-inner:   #6b4010;
+      --color-display-bg:     #1a1005;
+      --color-display-text:   #f0e0a0;
+      --color-display-sub:    #9a8060;
+
+      --color-num-bg:         #c8a870;
+      --color-num-bg-hover:   #d8bc84;
+      --color-num-text:       #2e1a04;
+      --color-num-border:     #8b6030;
+      --color-num-shadow-hi:  #e0c890;
+      --color-num-shadow-lo:  #805020;
+
+      --color-op-bg:          #8b1a1a;
+      --color-op-bg-hover:    #a82020;
+      --color-op-text:        #ffe8a0;
+      --color-op-border:      #c03030;
+      --color-op-glow:        rgba(200, 60, 60, 0.7);
+
+      --color-eq-bg:          #906800;
+      --color-eq-bg-hover:    #b08000;
+      --color-eq-text:        #fffae0;
+      --color-eq-border:      #d0a020;
+      --color-eq-glow:        rgba(210, 170, 30, 0.8);
+
+      --color-clr-bg:         #245c24;
+      --color-clr-bg-hover:   #307830;
+      --color-clr-text:       #d0ffd0;
+      --color-clr-border:     #408040;
+
+      --color-title:          #5a2800;
+      --color-footer:         #7a4818;
+      --color-ornament:       #6b4010;
+
+      --color-toggle-bg:      #e8d4a8;
+      --color-toggle-border:  #8b6030;
+      --color-toggle-text:    #3a1a00;
     }
 
     /* ===== Reset & Base ===== */
@@ -68,22 +114,74 @@
       align-items: center;
       justify-content: center;
       background-color: var(--color-bg-page);
+      font-family: var(--font-main);
+      padding: 20px;
+      transition: background-color 0.4s ease;
+    }
+
+    :root[data-theme="dark"] body {
       background-image:
         radial-gradient(ellipse at 50% 0%, rgba(100, 70, 20, 0.35) 0%, transparent 65%),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a1209'/%3E%3Crect x='0' y='0' width='1' height='1' fill='%23221608' opacity='0.6'/%3E%3C/svg%3E");
+    }
+
+    :root[data-theme="light"] body {
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(200, 140, 60, 0.4) 0%, transparent 65%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23c8a86a'/%3E%3Crect x='0' y='0' width='1' height='1' fill='%23d4b878' opacity='0.5'/%3E%3C/svg%3E");
+    }
+
+    /* ===== Theme Toggle Button ===== */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
       font-family: var(--font-main);
-      padding: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      background: var(--color-toggle-bg);
+      color: var(--color-toggle-text);
+      border: 1px solid var(--color-toggle-border);
+      border-radius: 20px;
+      padding: 7px 14px;
+      box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.06);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(200, 160, 80, 0.35);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.96);
+    }
+
+    .theme-toggle-icon {
+      font-size: 0.9rem;
+      line-height: 1;
     }
 
     /* ===== Title ===== */
     .page-title {
       font-family: var(--font-deco);
       font-size: clamp(0.85rem, 2vw, 1.05rem);
-      color: #c8a050;
+      color: var(--color-title);
       letter-spacing: 0.25em;
       text-transform: uppercase;
       margin-bottom: 18px;
-      text-shadow: 0 0 12px rgba(200, 160, 80, 0.5);
+      text-shadow: 0 0 12px rgba(200, 160, 80, 0.4);
+      transition: color 0.4s ease;
     }
 
     /* ===== Ornament divider ===== */
@@ -92,9 +190,10 @@
       align-items: center;
       gap: 10px;
       margin-bottom: 14px;
-      color: var(--color-border-inner);
+      color: var(--color-ornament);
       font-size: 1rem;
       opacity: 0.7;
+      transition: color 0.4s ease;
     }
 
     .ornament::before,
@@ -102,7 +201,7 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(to right, transparent, var(--color-border-inner), transparent);
+      background: linear-gradient(to right, transparent, var(--color-ornament), transparent);
     }
 
     /* ===== Calculator Container ===== */
@@ -112,16 +211,16 @@
       border-radius: var(--radius-calc);
       border: 2px solid var(--color-border-outer);
       box-shadow:
-        0 0 0 1px #1a0e04,
+        0 0 0 1px rgba(0,0,0,0.3),
         0 0 0 3px var(--color-border-inner),
         0 0 0 4px var(--color-border-outer),
-        0 8px 40px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(200, 160, 90, 0.15);
+        0 8px 40px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(200, 160, 90, 0.12);
       padding: 20px;
       position: relative;
+      transition: background 0.4s ease, border-color 0.4s ease;
     }
 
-    /* corner decoration */
     .calc-container::before,
     .calc-container::after {
       content: '✦';
@@ -172,6 +271,7 @@
       text-shadow: 0 0 10px rgba(232, 212, 154, 0.3);
       line-height: 1.15;
       margin-top: 4px;
+      transition: color 0.2s ease;
     }
 
     /* ===== Button Grid ===== */
@@ -203,87 +303,82 @@
 
     /* ===== Number Buttons ===== */
     .btn-number {
-      background: linear-gradient(160deg, var(--color-num-bg) 0%, #2e2008 100%);
+      background: linear-gradient(160deg, var(--color-num-bg) 0%, color-mix(in srgb, var(--color-num-bg) 70%, black) 100%);
       color: var(--color-num-text);
       border: 1px solid var(--color-num-border);
       box-shadow:
         0 2px 0 var(--color-num-shadow-lo),
         inset 0 1px 0 var(--color-num-shadow-hi),
-        inset 0 -1px 0 rgba(0,0,0,0.4);
+        inset 0 -1px 0 rgba(0,0,0,0.3);
     }
 
     .btn-number:hover {
-      background: linear-gradient(160deg, var(--color-num-bg-hover) 0%, #3a2810 100%);
+      background: linear-gradient(160deg, var(--color-num-bg-hover) 0%, color-mix(in srgb, var(--color-num-bg-hover) 70%, black) 100%);
       transform: scale(1.05);
       box-shadow:
         0 3px 0 var(--color-num-shadow-lo),
         inset 0 1px 0 var(--color-num-shadow-hi),
-        0 0 8px rgba(180, 140, 60, 0.2);
+        0 0 8px rgba(180, 140, 60, 0.25);
     }
 
     /* ===== Operator Buttons ===== */
     .btn-operator {
-      background: linear-gradient(160deg, var(--color-op-bg) 0%, #3a0a0a 100%);
+      background: linear-gradient(160deg, var(--color-op-bg) 0%, color-mix(in srgb, var(--color-op-bg) 60%, black) 100%);
       color: var(--color-op-text);
       border: 1px solid var(--color-op-border);
       box-shadow:
-        0 2px 0 #0f0404,
-        inset 0 1px 0 rgba(180, 60, 60, 0.3),
-        inset 0 -1px 0 rgba(0,0,0,0.4);
+        0 2px 0 rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(200, 80, 80, 0.25),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
     }
 
     .btn-operator:hover {
-      background: linear-gradient(160deg, var(--color-op-bg-hover) 0%, #4a1010 100%);
+      background: linear-gradient(160deg, var(--color-op-bg-hover) 0%, color-mix(in srgb, var(--color-op-bg-hover) 60%, black) 100%);
       transform: scale(1.05);
       box-shadow:
-        0 3px 0 #0f0404,
-        inset 0 1px 0 rgba(200, 80, 80, 0.35),
+        0 3px 0 rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(220, 90, 90, 0.3),
         0 0 12px var(--color-op-glow);
     }
 
     /* ===== Equals Button ===== */
     .btn-equals {
-      background: linear-gradient(160deg, var(--color-eq-bg) 0%, #3a2a00 100%);
+      background: linear-gradient(160deg, var(--color-eq-bg) 0%, color-mix(in srgb, var(--color-eq-bg) 55%, black) 100%);
       color: var(--color-eq-text);
       border: 1px solid var(--color-eq-border);
       box-shadow:
-        0 2px 0 #1a1000,
-        inset 0 1px 0 rgba(200, 160, 48, 0.35),
-        inset 0 -1px 0 rgba(0,0,0,0.4);
+        0 2px 0 rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(200, 160, 48, 0.3),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
     }
 
     .btn-equals:hover {
-      background: linear-gradient(160deg, var(--color-eq-bg-hover) 0%, #4a3800 100%);
+      background: linear-gradient(160deg, var(--color-eq-bg-hover) 0%, color-mix(in srgb, var(--color-eq-bg-hover) 55%, black) 100%);
       transform: scale(1.05);
       box-shadow:
-        0 3px 0 #1a1000,
-        inset 0 1px 0 rgba(220, 180, 60, 0.4),
+        0 3px 0 rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(220, 180, 60, 0.35),
         0 0 14px var(--color-eq-glow);
     }
 
     /* ===== Clear Buttons ===== */
     .btn-clear {
-      background: linear-gradient(160deg, var(--color-clr-bg) 0%, #0e200e 100%);
+      background: linear-gradient(160deg, var(--color-clr-bg) 0%, color-mix(in srgb, var(--color-clr-bg) 60%, black) 100%);
       color: var(--color-clr-text);
       border: 1px solid var(--color-clr-border);
       box-shadow:
-        0 2px 0 #060e06,
-        inset 0 1px 0 rgba(80, 180, 100, 0.2),
-        inset 0 -1px 0 rgba(0,0,0,0.4);
+        0 2px 0 rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(80, 180, 100, 0.18),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
     }
 
     .btn-clear:hover {
-      background: linear-gradient(160deg, var(--color-clr-bg-hover) 0%, #152815 100%);
+      background: linear-gradient(160deg, var(--color-clr-bg-hover) 0%, color-mix(in srgb, var(--color-clr-bg-hover) 60%, black) 100%);
       transform: scale(1.05);
       box-shadow:
-        0 3px 0 #060e06,
-        inset 0 1px 0 rgba(100, 200, 120, 0.25),
+        0 3px 0 rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(100, 200, 120, 0.22),
         0 0 10px rgba(80, 200, 100, 0.4);
-    }
-
-    /* ===== Wide Buttons (span 2 cols) ===== */
-    .btn-wide {
-      grid-column: span 2;
     }
 
     /* ===== Footer ornament ===== */
@@ -291,9 +386,20 @@
       margin-top: 14px;
       text-align: center;
       font-size: 0.6rem;
-      color: #5a4020;
+      color: var(--color-footer);
       letter-spacing: 0.2em;
       opacity: 0.7;
+      transition: color 0.4s ease;
+    }
+
+    /* ===== Fireworks Canvas ===== */
+    #fireworks-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
     }
 
     /* ===== Responsive ===== */
@@ -301,10 +407,17 @@
       .calc-container { padding: 14px; }
       .calc-grid { gap: 6px; }
       .btn { padding: 12px 6px; font-size: 0.9rem; }
+      .theme-toggle { top: 10px; right: 10px; font-size: 0.62rem; padding: 6px 10px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Dark/Light mode toggle -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+    <span class="theme-toggle-icon" id="toggle-icon">☀</span>
+    <span id="toggle-label">DAY</span>
+  </button>
 
   <h1 class="page-title">✦ Arcane Arithmetician ✦</h1>
   <div class="ornament">⚔</div>
@@ -321,39 +434,42 @@
     <div class="calc-grid">
 
       <!-- Row 1 -->
-      <button class="btn btn-clear"    data-action="clear-all"  aria-label="All Clear">AC</button>
-      <button class="btn btn-clear"    data-action="clear-entry" aria-label="Clear Entry">CE</button>
-      <button class="btn btn-operator" data-action="percent"    aria-label="Percent">%</button>
+      <button class="btn btn-clear"    data-action="clear-all"              aria-label="All Clear">AC</button>
+      <button class="btn btn-clear"    data-action="clear-entry"            aria-label="Clear Entry">CE</button>
+      <button class="btn btn-operator" data-action="percent"                aria-label="Percent">%</button>
       <button class="btn btn-operator" data-action="operator" data-value="÷" aria-label="Divide">÷</button>
 
       <!-- Row 2 -->
-      <button class="btn btn-number"   data-action="digit" data-value="7" aria-label="7">7</button>
-      <button class="btn btn-number"   data-action="digit" data-value="8" aria-label="8">8</button>
-      <button class="btn btn-number"   data-action="digit" data-value="9" aria-label="9">9</button>
+      <button class="btn btn-number"   data-action="digit" data-value="7"  aria-label="7">7</button>
+      <button class="btn btn-number"   data-action="digit" data-value="8"  aria-label="8">8</button>
+      <button class="btn btn-number"   data-action="digit" data-value="9"  aria-label="9">9</button>
       <button class="btn btn-operator" data-action="operator" data-value="×" aria-label="Multiply">×</button>
 
       <!-- Row 3 -->
-      <button class="btn btn-number"   data-action="digit" data-value="4" aria-label="4">4</button>
-      <button class="btn btn-number"   data-action="digit" data-value="5" aria-label="5">5</button>
-      <button class="btn btn-number"   data-action="digit" data-value="6" aria-label="6">6</button>
+      <button class="btn btn-number"   data-action="digit" data-value="4"  aria-label="4">4</button>
+      <button class="btn btn-number"   data-action="digit" data-value="5"  aria-label="5">5</button>
+      <button class="btn btn-number"   data-action="digit" data-value="6"  aria-label="6">6</button>
       <button class="btn btn-operator" data-action="operator" data-value="−" aria-label="Subtract">−</button>
 
       <!-- Row 4 -->
-      <button class="btn btn-number"   data-action="digit" data-value="1" aria-label="1">1</button>
-      <button class="btn btn-number"   data-action="digit" data-value="2" aria-label="2">2</button>
-      <button class="btn btn-number"   data-action="digit" data-value="3" aria-label="3">3</button>
+      <button class="btn btn-number"   data-action="digit" data-value="1"  aria-label="1">1</button>
+      <button class="btn btn-number"   data-action="digit" data-value="2"  aria-label="2">2</button>
+      <button class="btn btn-number"   data-action="digit" data-value="3"  aria-label="3">3</button>
       <button class="btn btn-operator" data-action="operator" data-value="+" aria-label="Add">+</button>
 
       <!-- Row 5 -->
-      <button class="btn btn-number"   data-action="negate"              aria-label="Toggle Sign">+/−</button>
-      <button class="btn btn-number"   data-action="digit" data-value="0" aria-label="0">0</button>
-      <button class="btn btn-number"   data-action="decimal"             aria-label="Decimal point">.</button>
-      <button class="btn btn-equals"   data-action="equals"              aria-label="Equals">=</button>
+      <button class="btn btn-number"   data-action="negate"                aria-label="Toggle Sign">+/−</button>
+      <button class="btn btn-number"   data-action="digit" data-value="0"  aria-label="0">0</button>
+      <button class="btn btn-number"   data-action="decimal"               aria-label="Decimal point">.</button>
+      <button class="btn btn-equals"   data-action="equals"                aria-label="Equals">=</button>
 
     </div>
 
     <p class="calc-footer">✦ &nbsp; BALDUR'S GATE III &nbsp; ✦ &nbsp; ARCANE ARITHMETICIAN &nbsp; ✦</p>
   </div>
+
+  <!-- Fireworks overlay -->
+  <canvas id="fireworks-canvas" aria-hidden="true"></canvas>
 
   <script>
     /* =========================================================
@@ -477,6 +593,14 @@
       state.expression     = '';
     };
 
+    /* ---------- Fireworks trigger check ---------- */
+    const checkAndFireworks = () => {
+      const num = parseFloat(state.currentValue);
+      if (!isNaN(num) && num > 100) {
+        triggerFireworks();
+      }
+    };
+
     /* ---------- Event delegation ---------- */
     document.querySelector('.calc-grid').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-action]');
@@ -489,7 +613,7 @@
         case 'digit':       handleDigit(value);    break;
         case 'decimal':     handleDecimal();        break;
         case 'operator':    handleOperator(value);  break;
-        case 'equals':      handleEquals();         break;
+        case 'equals':      handleEquals(); checkAndFireworks(); break;
         case 'percent':     handlePercent();        break;
         case 'negate':      handleNegate();         break;
         case 'clear-entry': handleClearEntry();     break;
@@ -502,17 +626,157 @@
     /* ---------- Keyboard support ---------- */
     document.addEventListener('keydown', (e) => {
       const key = e.key;
-      if (key >= '0' && key <= '9')    { handleDigit(key);   updateDisplay(); return; }
-      if (key === '.')                  { handleDecimal();     updateDisplay(); return; }
-      if (key === '+')                  { handleOperator('+'); updateDisplay(); return; }
-      if (key === '-')                  { handleOperator('−'); updateDisplay(); return; }
-      if (key === '*')                  { handleOperator('×'); updateDisplay(); return; }
-      if (key === '/')                  { e.preventDefault(); handleOperator('÷'); updateDisplay(); return; }
-      if (key === 'Enter' || key === '=') { handleEquals();   updateDisplay(); return; }
-      if (key === 'Escape')             { handleClearAll();   updateDisplay(); return; }
-      if (key === 'Backspace')          { handleClearEntry(); updateDisplay(); return; }
-      if (key === '%')                  { handlePercent();    updateDisplay(); return; }
+      if (key >= '0' && key <= '9')        { handleDigit(key);   updateDisplay(); return; }
+      if (key === '.')                      { handleDecimal();     updateDisplay(); return; }
+      if (key === '+')                      { handleOperator('+'); updateDisplay(); return; }
+      if (key === '-')                      { handleOperator('−'); updateDisplay(); return; }
+      if (key === '*')                      { handleOperator('×'); updateDisplay(); return; }
+      if (key === '/') {
+        e.preventDefault();
+        handleOperator('÷');
+        updateDisplay();
+        return;
+      }
+      if (key === 'Enter' || key === '=')  {
+        handleEquals();
+        updateDisplay();
+        checkAndFireworks();
+        return;
+      }
+      if (key === 'Escape')                { handleClearAll();   updateDisplay(); return; }
+      if (key === 'Backspace')             { handleClearEntry(); updateDisplay(); return; }
+      if (key === '%')                     { handlePercent();    updateDisplay(); return; }
     });
+
+    /* =========================================================
+       Theme Toggle
+       ========================================================= */
+    const htmlEl      = document.documentElement;
+    const toggleBtn   = document.getElementById('theme-toggle');
+    const toggleIcon  = document.getElementById('toggle-icon');
+    const toggleLabel = document.getElementById('toggle-label');
+
+    const applyTheme = (theme) => {
+      htmlEl.dataset.theme = theme;
+      if (theme === 'light') {
+        toggleIcon.textContent  = '🌙';
+        toggleLabel.textContent = 'NIGHT';
+      } else {
+        toggleIcon.textContent  = '☀';
+        toggleLabel.textContent = 'DAY';
+      }
+      localStorage.setItem('bg3-theme', theme);
+    };
+
+    toggleBtn.addEventListener('click', () => {
+      applyTheme(htmlEl.dataset.theme === 'dark' ? 'light' : 'dark');
+    });
+
+    /* Restore saved theme */
+    const savedTheme = localStorage.getItem('bg3-theme');
+    if (savedTheme) applyTheme(savedTheme);
+
+    /* =========================================================
+       Fireworks — Canvas particle system (no external lib)
+       ========================================================= */
+    const canvas = document.getElementById('fireworks-canvas');
+    const ctx    = canvas.getContext('2d');
+
+    const FW_COLORS = [
+      '#e8c070', '#c8a030', '#ff7070', '#b03030',
+      '#a060d0', '#6090ff', '#60ff90', '#ffffff',
+      '#ffaa40', '#ff60b0',
+    ];
+
+    let particles    = [];
+    let animFrameId  = null;
+
+    const resizeCanvas = () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor(x, y) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 7 + 2;
+        this.x       = x;
+        this.y       = y;
+        this.vx      = Math.cos(angle) * speed;
+        this.vy      = Math.sin(angle) * speed;
+        this.alpha   = 1;
+        this.decay   = Math.random() * 0.018 + 0.012;
+        this.radius  = Math.random() * 3 + 1.2;
+        this.color   = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
+        this.gravity = 0.14;
+        this.trail   = [];
+      }
+
+      update() {
+        this.trail.push({ x: this.x, y: this.y });
+        if (this.trail.length > 7) this.trail.shift();
+        this.vy    += this.gravity;
+        this.x     += this.vx;
+        this.y     += this.vy;
+        this.alpha -= this.decay;
+      }
+
+      draw() {
+        ctx.save();
+        for (let i = 0; i < this.trail.length; i++) {
+          const t = this.trail[i];
+          ctx.globalAlpha = (i / this.trail.length) * this.alpha * 0.35;
+          ctx.fillStyle   = this.color;
+          ctx.beginPath();
+          ctx.arc(t.x, t.y, this.radius * 0.45, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha  = Math.max(this.alpha, 0);
+        ctx.fillStyle    = this.color;
+        ctx.shadowColor  = this.color;
+        ctx.shadowBlur   = 8;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    const launchBurst = (x, y, count = 80) => {
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(x, y));
+      }
+    };
+
+    const animateFireworks = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter(p => p.alpha > 0);
+      particles.forEach(p => { p.update(); p.draw(); });
+
+      if (particles.length > 0) {
+        animFrameId = requestAnimationFrame(animateFireworks);
+      } else {
+        animFrameId = null;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    const triggerFireworks = () => {
+      resizeCanvas();
+      const bursts = 6;
+      for (let i = 0; i < bursts; i++) {
+        setTimeout(() => {
+          const x = canvas.width  * (0.15 + Math.random() * 0.7);
+          const y = canvas.height * (0.1  + Math.random() * 0.5);
+          launchBurst(x, y, 75);
+        }, i * 280);
+      }
+      if (!animFrameId) {
+        animFrameId = requestAnimationFrame(animateFireworks);
+      }
+    };
   </script>
 
 </body>
