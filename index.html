@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BG3 Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS Custom Properties ===== */
+    :root {
+      --color-bg-page:        #1a1209;
+      --color-bg-calc:        #2b1f0e;
+      --color-border-outer:   #7a5c2e;
+      --color-border-inner:   #c8a05a;
+      --color-display-bg:     #0d0a05;
+      --color-display-text:   #e8d49a;
+      --color-display-sub:    #8a7050;
+      --color-parchment:      #f4ecd8;
+
+      /* Number button */
+      --color-num-bg:         #3d2e14;
+      --color-num-bg-hover:   #4e3a1a;
+      --color-num-text:       #d4b87a;
+      --color-num-border:     #6b4e22;
+      --color-num-shadow-hi:  #5a4020;
+      --color-num-shadow-lo:  #1a0e04;
+
+      /* Operator button */
+      --color-op-bg:          #5c1a1a;
+      --color-op-bg-hover:    #6e2020;
+      --color-op-text:        #e8c070;
+      --color-op-border:      #8b2c2c;
+      --color-op-glow:        rgba(180, 60, 60, 0.6);
+
+      /* Equals button */
+      --color-eq-bg:          #7a5a00;
+      --color-eq-bg-hover:    #9a7000;
+      --color-eq-text:        #fff8e0;
+      --color-eq-border:      #c8a030;
+      --color-eq-glow:        rgba(200, 160, 48, 0.7);
+
+      /* Clear button */
+      --color-clr-bg:         #1a3a1a;
+      --color-clr-bg-hover:   #22502a;
+      --color-clr-text:       #80d490;
+      --color-clr-border:     #2e6e3a;
+
+      --font-main:            'Cinzel', serif;
+      --font-deco:            'Cinzel Decorative', cursive;
+      --radius-btn:           6px;
+      --radius-calc:          12px;
+      --transition-btn:       all 0.15s ease;
+    }
+
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-bg-page);
+      background-image:
+        radial-gradient(ellipse at 50% 0%, rgba(100, 70, 20, 0.35) 0%, transparent 65%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a1209'/%3E%3Crect x='0' y='0' width='1' height='1' fill='%23221608' opacity='0.6'/%3E%3C/svg%3E");
+      font-family: var(--font-main);
+      padding: 20px;
+    }
+
+    /* ===== Title ===== */
+    .page-title {
+      font-family: var(--font-deco);
+      font-size: clamp(0.85rem, 2vw, 1.05rem);
+      color: #c8a050;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      text-shadow: 0 0 12px rgba(200, 160, 80, 0.5);
+    }
+
+    /* ===== Ornament divider ===== */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--color-border-inner);
+      font-size: 1rem;
+      opacity: 0.7;
+    }
+
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--color-border-inner), transparent);
+    }
+
+    /* ===== Calculator Container ===== */
+    .calc-container {
+      width: min(360px, 100%);
+      background: var(--color-bg-calc);
+      border-radius: var(--radius-calc);
+      border: 2px solid var(--color-border-outer);
+      box-shadow:
+        0 0 0 1px #1a0e04,
+        0 0 0 3px var(--color-border-inner),
+        0 0 0 4px var(--color-border-outer),
+        0 8px 40px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(200, 160, 90, 0.15);
+      padding: 20px;
+      position: relative;
+    }
+
+    /* corner decoration */
+    .calc-container::before,
+    .calc-container::after {
+      content: '✦';
+      position: absolute;
+      color: var(--color-border-inner);
+      font-size: 0.7rem;
+      opacity: 0.6;
+    }
+    .calc-container::before { top: 7px; left: 10px; }
+    .calc-container::after  { top: 7px; right: 10px; }
+
+    /* ===== Display ===== */
+    .calc-display {
+      background: var(--color-display-bg);
+      border-radius: 6px;
+      border: 1px solid #3a2a10;
+      box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.9),
+        inset 0 0 20px rgba(0, 0, 0, 0.5),
+        0 1px 0 rgba(200, 160, 90, 0.1);
+      padding: 14px 16px 10px;
+      margin-bottom: 16px;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .display-expression {
+      font-family: var(--font-main);
+      font-size: 0.78rem;
+      color: var(--color-display-sub);
+      min-height: 1.2em;
+      word-break: break-all;
+      text-align: right;
+      letter-spacing: 0.05em;
+    }
+
+    .display-result {
+      font-family: var(--font-main);
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      color: var(--color-display-text);
+      word-break: break-all;
+      text-align: right;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 10px rgba(232, 212, 154, 0.3);
+      line-height: 1.15;
+      margin-top: 4px;
+    }
+
+    /* ===== Button Grid ===== */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    /* ===== Base Button ===== */
+    .btn {
+      font-family: var(--font-main);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: var(--radius-btn);
+      padding: 14px 8px;
+      transition: var(--transition-btn);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      outline: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.95) translateY(1px);
+    }
+
+    /* ===== Number Buttons ===== */
+    .btn-number {
+      background: linear-gradient(160deg, var(--color-num-bg) 0%, #2e2008 100%);
+      color: var(--color-num-text);
+      border: 1px solid var(--color-num-border);
+      box-shadow:
+        0 2px 0 var(--color-num-shadow-lo),
+        inset 0 1px 0 var(--color-num-shadow-hi),
+        inset 0 -1px 0 rgba(0,0,0,0.4);
+    }
+
+    .btn-number:hover {
+      background: linear-gradient(160deg, var(--color-num-bg-hover) 0%, #3a2810 100%);
+      transform: scale(1.05);
+      box-shadow:
+        0 3px 0 var(--color-num-shadow-lo),
+        inset 0 1px 0 var(--color-num-shadow-hi),
+        0 0 8px rgba(180, 140, 60, 0.2);
+    }
+
+    /* ===== Operator Buttons ===== */
+    .btn-operator {
+      background: linear-gradient(160deg, var(--color-op-bg) 0%, #3a0a0a 100%);
+      color: var(--color-op-text);
+      border: 1px solid var(--color-op-border);
+      box-shadow:
+        0 2px 0 #0f0404,
+        inset 0 1px 0 rgba(180, 60, 60, 0.3),
+        inset 0 -1px 0 rgba(0,0,0,0.4);
+    }
+
+    .btn-operator:hover {
+      background: linear-gradient(160deg, var(--color-op-bg-hover) 0%, #4a1010 100%);
+      transform: scale(1.05);
+      box-shadow:
+        0 3px 0 #0f0404,
+        inset 0 1px 0 rgba(200, 80, 80, 0.35),
+        0 0 12px var(--color-op-glow);
+    }
+
+    /* ===== Equals Button ===== */
+    .btn-equals {
+      background: linear-gradient(160deg, var(--color-eq-bg) 0%, #3a2a00 100%);
+      color: var(--color-eq-text);
+      border: 1px solid var(--color-eq-border);
+      box-shadow:
+        0 2px 0 #1a1000,
+        inset 0 1px 0 rgba(200, 160, 48, 0.35),
+        inset 0 -1px 0 rgba(0,0,0,0.4);
+    }
+
+    .btn-equals:hover {
+      background: linear-gradient(160deg, var(--color-eq-bg-hover) 0%, #4a3800 100%);
+      transform: scale(1.05);
+      box-shadow:
+        0 3px 0 #1a1000,
+        inset 0 1px 0 rgba(220, 180, 60, 0.4),
+        0 0 14px var(--color-eq-glow);
+    }
+
+    /* ===== Clear Buttons ===== */
+    .btn-clear {
+      background: linear-gradient(160deg, var(--color-clr-bg) 0%, #0e200e 100%);
+      color: var(--color-clr-text);
+      border: 1px solid var(--color-clr-border);
+      box-shadow:
+        0 2px 0 #060e06,
+        inset 0 1px 0 rgba(80, 180, 100, 0.2),
+        inset 0 -1px 0 rgba(0,0,0,0.4);
+    }
+
+    .btn-clear:hover {
+      background: linear-gradient(160deg, var(--color-clr-bg-hover) 0%, #152815 100%);
+      transform: scale(1.05);
+      box-shadow:
+        0 3px 0 #060e06,
+        inset 0 1px 0 rgba(100, 200, 120, 0.25),
+        0 0 10px rgba(80, 200, 100, 0.4);
+    }
+
+    /* ===== Wide Buttons (span 2 cols) ===== */
+    .btn-wide {
+      grid-column: span 2;
+    }
+
+    /* ===== Footer ornament ===== */
+    .calc-footer {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.6rem;
+      color: #5a4020;
+      letter-spacing: 0.2em;
+      opacity: 0.7;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 400px) {
+      .calc-container { padding: 14px; }
+      .calc-grid { gap: 6px; }
+      .btn { padding: 12px 6px; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">✦ Arcane Arithmetician ✦</h1>
+  <div class="ornament">⚔</div>
+
+  <div class="calc-container" role="main" aria-label="BG3 Calculator">
+
+    <!-- Display -->
+    <div class="calc-display" aria-live="polite" aria-label="Calculator display">
+      <div class="display-expression" id="display-expression" aria-label="Expression"></div>
+      <div class="display-result"     id="display-result"     aria-label="Result">0</div>
+    </div>
+
+    <!-- Button Grid -->
+    <div class="calc-grid">
+
+      <!-- Row 1 -->
+      <button class="btn btn-clear"    data-action="clear-all"  aria-label="All Clear">AC</button>
+      <button class="btn btn-clear"    data-action="clear-entry" aria-label="Clear Entry">CE</button>
+      <button class="btn btn-operator" data-action="percent"    aria-label="Percent">%</button>
+      <button class="btn btn-operator" data-action="operator" data-value="÷" aria-label="Divide">÷</button>
+
+      <!-- Row 2 -->
+      <button class="btn btn-number"   data-action="digit" data-value="7" aria-label="7">7</button>
+      <button class="btn btn-number"   data-action="digit" data-value="8" aria-label="8">8</button>
+      <button class="btn btn-number"   data-action="digit" data-value="9" aria-label="9">9</button>
+      <button class="btn btn-operator" data-action="operator" data-value="×" aria-label="Multiply">×</button>
+
+      <!-- Row 3 -->
+      <button class="btn btn-number"   data-action="digit" data-value="4" aria-label="4">4</button>
+      <button class="btn btn-number"   data-action="digit" data-value="5" aria-label="5">5</button>
+      <button class="btn btn-number"   data-action="digit" data-value="6" aria-label="6">6</button>
+      <button class="btn btn-operator" data-action="operator" data-value="−" aria-label="Subtract">−</button>
+
+      <!-- Row 4 -->
+      <button class="btn btn-number"   data-action="digit" data-value="1" aria-label="1">1</button>
+      <button class="btn btn-number"   data-action="digit" data-value="2" aria-label="2">2</button>
+      <button class="btn btn-number"   data-action="digit" data-value="3" aria-label="3">3</button>
+      <button class="btn btn-operator" data-action="operator" data-value="+" aria-label="Add">+</button>
+
+      <!-- Row 5 -->
+      <button class="btn btn-number"   data-action="negate"              aria-label="Toggle Sign">+/−</button>
+      <button class="btn btn-number"   data-action="digit" data-value="0" aria-label="0">0</button>
+      <button class="btn btn-number"   data-action="decimal"             aria-label="Decimal point">.</button>
+      <button class="btn btn-equals"   data-action="equals"              aria-label="Equals">=</button>
+
+    </div>
+
+    <p class="calc-footer">✦ &nbsp; BALDUR'S GATE III &nbsp; ✦ &nbsp; ARCANE ARITHMETICIAN &nbsp; ✦</p>
+  </div>
+
+  <script>
+    /* =========================================================
+       State Machine — no eval() used
+       ========================================================= */
+    const MAX_DIGITS = 15;
+
+    const state = {
+      currentValue:   '0',
+      previousValue:  '',
+      operator:       null,
+      waitingForNext: false,
+      expression:     '',
+    };
+
+    const elExpression = document.getElementById('display-expression');
+    const elResult     = document.getElementById('display-result');
+
+    /* ---------- Pure calculation logic ---------- */
+    const calculate = (a, b, op) => {
+      const numA = parseFloat(a);
+      const numB = parseFloat(b);
+      switch (op) {
+        case '+': return numA + numB;
+        case '−': return numA - numB;
+        case '×': return numA * numB;
+        case '÷': return numB === 0 ? 'Err: Div/0' : numA / numB;
+        default:  return numB;
+      }
+    };
+
+    const formatNumber = (value) => {
+      if (typeof value === 'string' && value.startsWith('Err')) return value;
+      const num = parseFloat(value);
+      if (isNaN(num)) return '0';
+      const str = String(num);
+      if (str.length > MAX_DIGITS) {
+        return num.toPrecision(10).replace(/\.?0+$/, '');
+      }
+      return str;
+    };
+
+    /* ---------- DOM update ---------- */
+    const updateDisplay = () => {
+      elResult.textContent     = state.currentValue;
+      elExpression.textContent = state.expression;
+    };
+
+    /* ---------- Action handlers ---------- */
+    const handleDigit = (digit) => {
+      if (state.waitingForNext) {
+        state.currentValue   = digit;
+        state.waitingForNext = false;
+      } else {
+        if (state.currentValue === '0' && digit !== '.') {
+          state.currentValue = digit;
+        } else if (state.currentValue.length < MAX_DIGITS) {
+          state.currentValue += digit;
+        }
+      }
+    };
+
+    const handleDecimal = () => {
+      if (state.waitingForNext) {
+        state.currentValue   = '0.';
+        state.waitingForNext = false;
+        return;
+      }
+      if (!state.currentValue.includes('.')) {
+        state.currentValue += '.';
+      }
+    };
+
+    const handleOperator = (op) => {
+      if (state.operator && !state.waitingForNext) {
+        const result = calculate(state.previousValue, state.currentValue, state.operator);
+        state.previousValue  = String(result);
+        state.currentValue   = formatNumber(result);
+        state.expression     = `${state.currentValue} ${op}`;
+      } else {
+        state.previousValue  = state.currentValue;
+        state.expression     = `${state.currentValue} ${op}`;
+      }
+      state.operator       = op;
+      state.waitingForNext = true;
+    };
+
+    const handleEquals = () => {
+      if (!state.operator || state.waitingForNext) return;
+      const result = calculate(state.previousValue, state.currentValue, state.operator);
+      state.expression     = `${state.previousValue} ${state.operator} ${state.currentValue} =`;
+      state.currentValue   = formatNumber(result);
+      state.previousValue  = '';
+      state.operator       = null;
+      state.waitingForNext = true;
+    };
+
+    const handlePercent = () => {
+      const val = parseFloat(state.currentValue);
+      if (isNaN(val)) return;
+      state.currentValue = formatNumber(val / 100);
+    };
+
+    const handleNegate = () => {
+      if (state.currentValue === '0' || state.currentValue.startsWith('Err')) return;
+      state.currentValue = state.currentValue.startsWith('-')
+        ? state.currentValue.slice(1)
+        : '-' + state.currentValue;
+    };
+
+    const handleClearEntry = () => {
+      state.currentValue   = '0';
+      state.waitingForNext = false;
+    };
+
+    const handleClearAll = () => {
+      state.currentValue   = '0';
+      state.previousValue  = '';
+      state.operator       = null;
+      state.waitingForNext = false;
+      state.expression     = '';
+    };
+
+    /* ---------- Event delegation ---------- */
+    document.querySelector('.calc-grid').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      const value  = btn.dataset.value;
+
+      switch (action) {
+        case 'digit':       handleDigit(value);    break;
+        case 'decimal':     handleDecimal();        break;
+        case 'operator':    handleOperator(value);  break;
+        case 'equals':      handleEquals();         break;
+        case 'percent':     handlePercent();        break;
+        case 'negate':      handleNegate();         break;
+        case 'clear-entry': handleClearEntry();     break;
+        case 'clear-all':   handleClearAll();       break;
+      }
+
+      updateDisplay();
+    });
+
+    /* ---------- Keyboard support ---------- */
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      if (key >= '0' && key <= '9')    { handleDigit(key);   updateDisplay(); return; }
+      if (key === '.')                  { handleDecimal();     updateDisplay(); return; }
+      if (key === '+')                  { handleOperator('+'); updateDisplay(); return; }
+      if (key === '-')                  { handleOperator('−'); updateDisplay(); return; }
+      if (key === '*')                  { handleOperator('×'); updateDisplay(); return; }
+      if (key === '/')                  { e.preventDefault(); handleOperator('÷'); updateDisplay(); return; }
+      if (key === 'Enter' || key === '=') { handleEquals();   updateDisplay(); return; }
+      if (key === 'Escape')             { handleClearAll();   updateDisplay(); return; }
+      if (key === 'Backspace')          { handleClearEntry(); updateDisplay(); return; }
+      if (key === '%')                  { handlePercent();    updateDisplay(); return; }
+    });
+  </script>
+
+</body>
+</html>
